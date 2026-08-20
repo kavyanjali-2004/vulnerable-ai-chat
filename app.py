@@ -1,3 +1,4 @@
 # Test vulnerability for Bandit
 # Real Bandit vulnerability
-eval("print('vulnerable')")
+# Gitleaks test secret
+API_KEY = "ghp_000000000000000000000000000000000000"

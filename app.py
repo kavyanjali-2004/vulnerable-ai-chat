@@ -1,2 +1,3 @@
 # Test vulnerability for Bandit
-PASSWORD = "super_secret_password_123"
+# Real Bandit vulnerability
+eval("print('vulnerable')")

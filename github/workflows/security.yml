@@ -1,0 +1,34 @@
+name: DevSecOps AI Security Pipeline
+
+on: [push]
+
+jobs:
+  security-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Gate 1 - Bandit SAST Scan
+        run: |
+          pip install bandit
+          bandit -r . -ll -ii
+
+      - name: Gate 2 - Safety Dependency Check
+        run: |
+          pip install safety
+          safety check -r requirements.txt || true
+
+      - name: Gate 3 - Gitleaks Secret Detection
+        uses: gitleaks/gitleaks-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Gate 4 - Custom Prompt Injection Scanner
+        run: |
+          python inject_scanner.py
